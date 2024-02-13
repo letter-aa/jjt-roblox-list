@@ -1,4 +1,5 @@
-fetch("https://api.allorigins.win/raw?url=https%3A%2F%2Fjtohs-joke-towers.fandom.com%2Fwiki%2FThe_Grand_Difficulty_Chart_Archive")
+function updatelist(exportToElement) {
+    fetch("https://api.allorigins.win/raw?url=https%3A%2F%2Fjtohs-joke-towers.fandom.com%2Fwiki%2FThe_Grand_Difficulty_Chart_Archive")
     .then(response => {
         return response.text()
     })
@@ -9,7 +10,7 @@ fetch("https://api.allorigins.win/raw?url=https%3A%2F%2Fjtohs-joke-towers.fandom
             return Array.prototype.slice.call(convert);
         }
 
-        var children = html.getElementsByClassName('mw-parser-output')[0].children
+        var children = html.getElementsByClassName('mw-parser-output')[0].children;
         var tbl = [];
         var f = 0;
         for (var v in arrayify(children)) {
@@ -74,5 +75,33 @@ fetch("https://api.allorigins.win/raw?url=https%3A%2F%2Fjtohs-joke-towers.fandom
             }
         }
 
-        console.log(tbl) // document.body.textContent
+        var str = "";
+        var newline = "&#10;";
+        var tab = "&emsp;";
+        for (var i in tbl){
+            var title = Object.keys(tbl[i])[0];
+            str = str.concat(title + ":" + newline)
+            var classChildren = tbl[i][title];
+            for (var v in classChildren){
+                var child = classChildren[v];
+                if (typeof(child) == "string"){
+                    str = str.concat(tab + child + newline);
+                } else if (typeof(child) == "object"){
+                    for (var x in child){
+                        var subChild = child[x];
+                        if (typeof(subChild) == "string"){
+                            str = str.concat(tab + subChild + ":" + newline);
+                        } else if (typeof(subChild) == "object"){
+                            for (var p in subChild){
+                                str = str.concat(tab + tab + subChild[p] + newline);
+                            }
+                        }
+                    }
+                }
+            }
+            str = str.concat(newline);
+        }
+        exportToElement.style.whiteSpace = "pre-wrap";
+        exportToElement.innerHTML = str;
     });
+}
