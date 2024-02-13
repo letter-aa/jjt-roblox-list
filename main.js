@@ -74,5 +74,5 @@ fetch("https://api.allorigins.win/raw?url=https%3A%2F%2Fjtohs-joke-towers.fandom
             }
         }
 
-        console.log(tbl)
+        console.log(tbl) // document.body.textContent
     });
