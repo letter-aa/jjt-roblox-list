@@ -66,7 +66,7 @@ fetch("https://api.allorigins.win/raw?url=https%3A%2F%2Fjtohs-joke-towers.fandom
                         }
                     }
                 } else {
-                    tbl1 = [];
+                    tbl1 = []; // does not support chains
                 }
                 tbl[f++] = {
                     [str]: tbl1
